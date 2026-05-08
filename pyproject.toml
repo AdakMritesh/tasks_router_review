@@ -38,8 +38,11 @@ profile = "black"
 select = ["E", "F", "I"]
 line-length = 88
 
-[project.scripts]
-start = "tasks_router.cli:main"
+[tool.pdm.scripts]
+dev = "uvicorn tasks_router.main:router --reload"
+lint = "ruff check ."
+format = "black ."
+test = "pytest -q"
 
 [tool.setuptools.dynamic]
 version = {attr = "tasks_router.__version__"}
