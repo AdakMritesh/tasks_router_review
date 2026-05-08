@@ -12,10 +12,13 @@ authors = [
 ]
 readme = "README.md"
 dependencies = [
-    "fastapi[standard]",
-    "SQLAlchemy",
-    "psycopg[binary]"
+    "fastapi[standard]>=0.136.1",
+    "SQLAlchemy>=2.0.49",
+    "psycopg[binary]>=3.3.4",
+    "alembic>=1.18.4",
+    "python-dotenv>=1.2.2"
 ]
+license = {text = "MIT"}
 
 [project.optional-dependencies]
 dev = [
@@ -30,3 +33,6 @@ version = {attr = "tasks_router.__version__"}
 
 [tool.setuptools.packages.find]
 include = ["tasks_router*"]
+
+[tool.pdm]
+distribution = false
