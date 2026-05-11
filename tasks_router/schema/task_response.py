@@ -1,6 +1,8 @@
+import uuid
+
 from tasks_router.schema.task_base import Task
 
 
 class TaskResponse(Task):
-    id: str
+    id: uuid.UUID
     # user_id: str
