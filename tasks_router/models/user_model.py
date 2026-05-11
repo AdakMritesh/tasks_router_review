@@ -1,12 +1,14 @@
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import String
+import uuid
 
-class Base(DeclarativeBase):
-    pass
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import UUID, String
+
+from .base_model import Base
 
 class User(Base):
     __tablename__ = 'user'
     
+    id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
     username: Mapped[str] = mapped_column(String, primary_key=True)
     display_name: Mapped[str] = mapped_column(String, nullable=False)
     # password: Mapped[str] = mapped_column(String, nullable=False)
