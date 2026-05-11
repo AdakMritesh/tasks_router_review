@@ -3,14 +3,12 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
 
 
-from tasks_router.database import get_db
-from tasks_router.services import TaskServices
-from tasks_router.schema.task_base import Task as TaskSchema
+from tasks_router.database.initiate_db import get_db
+from tasks_router.services.task_service import TaskServices
+from tasks_router.schema.task_schema import Task as TaskSchema
 from tasks_router.models.task_model import Task as TaskModel
 
 router = FastAPI(redirect_slashes=False)
-# db_session = Session(engine)
-# task_services = TaskServices(db_session)
 
 @router.get("/tasks", response_model=List[TaskSchema])
 def get_tasks(user_id: str, db: Session = Depends(get_db)) -> List[TaskSchema]:
