@@ -1,6 +1,6 @@
 import uuid
 
-from tasks_router.schema.task_base import Task
+from tasks_router.schema.task_schema import Task
 
 
 class TaskResponse(Task):
