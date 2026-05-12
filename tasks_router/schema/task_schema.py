@@ -11,3 +11,17 @@ class Task(BaseModel):
     status: str = 'todo'
     due_date: datetime | None = Field(default=None, validation_alias=AliasChoices('dueDate', 'due_date'))
     model_config = ConfigDict(from_attributes=True)
+
+class TaskCreate(Task):
+    pass
+
+
+import uuid
+
+class TaskUpdate(Task):
+    id: uuid.UUID
+    # user_id: str
+
+class TaskResponse(Task):
+    id: uuid.UUID
+    # user_id: str
