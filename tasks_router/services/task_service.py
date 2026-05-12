@@ -6,9 +6,7 @@ This module defines the TaskServices class, which interacts with the TaskReposit
 import uuid
 
 from tasks_router.models.task_model import Task as TaskModel
-from tasks_router.schema.task_create import TaskCreate
-from tasks_router.schema.task_update import TaskUpdate
-from tasks_router.schema.task_response import TaskResponse
+from tasks_router.schema.task_schema import TaskCreate, TaskUpdate, TaskResponse
 from tasks_router.repositories.task_repo import TaskRepository
 from tasks_router.utils import convert_task_model_to_response, convert_task_models_to_responses
 

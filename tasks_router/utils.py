@@ -1,7 +1,7 @@
 """Utility functions"""
 
 from tasks_router.models.task_model import Task as TaskModel
-from tasks_router.schema.task_response import TaskResponse
+from tasks_router.schema.task_schema import TaskResponse
 from tasks_router.models.user_model import User as UserModel
 from tasks_router.schema.user_schema import User as UserDTO
 
