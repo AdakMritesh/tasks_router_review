@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 
 from tasks_router.routers.task_router import router as task_router
+from tasks_router.routers.user_router import router as user_router
+from tasks_router.routers.system_router import router as system_router
 
 router = FastAPI(redirect_slashes=False)
 
 router.include_router(task_router)
+router.include_router(user_router)
+router.include_router(system_router)
