@@ -21,7 +21,7 @@ class TaskRepository:
 
     # ------------------------------ Read operations ------------------------------
 
-    def get_all(self, user_id: str) -> list[TaskModel]:
+    def get_all(self, user_id: uuid.UUID) -> list[TaskModel]:
         """Retrieve all tasks for a given user ID."""
         
         try:
