@@ -16,6 +16,9 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env")
 
+    # TODO: Add logging here to log the loaded settings, ensuring that sensitive information like passwords is not logged. 
+    # Consider adding validation for the settings to ensure they are correct before attempting to connect to the database.
+    
     def get_db_url(self) -> str:
         """Constructs the database URL from the settings."""
 
