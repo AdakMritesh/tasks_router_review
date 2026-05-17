@@ -21,12 +21,19 @@ def get_tasks(user_id: uuid.UUID, db: Session = Depends(_db.get_db)) -> list[Tas
 @router.post("/", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 def create_task(task: TaskCreate, db: Session = Depends(_db.get_db)) -> TaskResponse:
     task_services: TaskServices = TaskServices(TaskRepository(db))
-    return task_services.create(task)
+    created_task: TaskResponse = task_services.create(task)
+    if not created_task:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to create task")
+    return created_task
+
 
 @router.put("/{task_id}", response_model=TaskResponse, status_code=status.HTTP_200_OK)
 def update_task(task_id: uuid.UUID, task: TaskUpdate, db: Session = Depends(_db.get_db)) -> TaskResponse:
     task_services: TaskServices = TaskServices(TaskRepository(db))
-    return task_services.update(task_id, task)
+    updated_task: TaskResponse = task_services.update(task_id, task)
+    if not updated_task:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to update task")
+    return updated_task
 
 @router.delete("/{task_id}", response_model=TaskResponse, status_code=status.HTTP_200_OK)
 def delete_task(task_id: uuid.UUID, db: Session = Depends(_db.get_db)) -> None:
