@@ -6,7 +6,7 @@ This module defines the UserService class, which interacts with the UserReposito
 from tasks_router.schema.user_schema import User as UserSchema
 from tasks_router.models.user_model import User as UserModel
 from tasks_router.repositories.user_repo import UserRepository
-from tasks_router.utils import convert_user_model_to_user_dto_schema
+from tasks_router.utils import convert_user_model_to_user_schema_dto
 
 class UserService:
     def __init__(self, repository: UserRepository) -> None:
@@ -18,8 +18,8 @@ class UserService:
         """Service for retrieving a user by their username."""
 
         user = self.repository.get_by_id(username)
-        return convert_user_model_to_user_dto_schema(user) if user else None
-    
+        return convert_user_model_to_user_schema_dto(user) if user else None
+
     def create(self, user: UserSchema) -> UserSchema:
         """Service for creating a new user in the database."""
 
@@ -28,4 +28,4 @@ class UserService:
             display_name=user.display_name,
         )
         created_user = self.repository.create(new_user)
-        return convert_user_model_to_user_dto_schema(created_user)
+        return convert_user_model_to_user_schema_dto(created_user)
