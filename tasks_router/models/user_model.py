@@ -2,10 +2,11 @@
 UserModel for SQLAlchemy ORM, representing the 'user' table in the database.
 """
 
+from datetime import UTC, datetime
 import uuid
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import UUID, String
+from sqlalchemy import UUID, DateTime, String
 
 from tasks_router.database.initiate_db import Base
 
@@ -15,4 +16,6 @@ class User(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
     username: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
     display_name: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC), onupdate=datetime.now(UTC), nullable=False)
     # password: Mapped[str] = mapped_column(String, nullable=False)
