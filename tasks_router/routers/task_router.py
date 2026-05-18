@@ -19,11 +19,15 @@ _db = Database(settings)
 
 @router.get("/", response_model=list[TaskResponse], status_code=status.HTTP_200_OK)
 def get_tasks(user_id: uuid.UUID, db: Session = Depends(_db.get_db)) -> list[TaskResponse]:
+    """Endpoint to retrieve all tasks for a given user ID."""
+
     task_services: TaskServices = TaskServices(TaskRepository(db))
     return task_services.get_all(user_id)
 
 @router.post("/", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 def create_task(task: TaskCreate, db: Session = Depends(_db.get_db)) -> TaskResponse:
+    """Endpoint to create a new task."""
+
     task_services: TaskServices = TaskServices(TaskRepository(db))
     created_task: TaskResponse = task_services.create(task)
     if not created_task:
@@ -33,6 +37,8 @@ def create_task(task: TaskCreate, db: Session = Depends(_db.get_db)) -> TaskResp
 
 @router.put("/{task_id}", response_model=TaskResponse, status_code=status.HTTP_200_OK)
 def update_task(task_id: uuid.UUID, task: TaskUpdate, db: Session = Depends(_db.get_db)) -> TaskResponse:
+    """Endpoint to update an existing task."""
+
     task_services: TaskServices = TaskServices(TaskRepository(db))
     updated_task: TaskResponse = task_services.update(task_id, task)
     if not updated_task:
@@ -41,5 +47,7 @@ def update_task(task_id: uuid.UUID, task: TaskUpdate, db: Session = Depends(_db.
 
 @router.delete("/{task_id}", response_model=TaskResponse, status_code=status.HTTP_200_OK)
 def delete_task(task_id: uuid.UUID, db: Session = Depends(_db.get_db)) -> None:
+    """Endpoint to delete a task by ID."""
+    
     task_services: TaskServices = TaskServices(TaskRepository(db))
     task_services.delete(task_id)

@@ -17,6 +17,8 @@ _db = Database(settings)
 
 @router.get("/{username}", response_model=User, status_code=status.HTTP_200_OK)
 def get_user(username: str, db: Session = Depends(_db.get_db)) -> User:
+    """Endpoint to retrieve a user by username."""
+    
     user_services: UserService = UserService(UserRepository(db))
     user: User | None = user_services.get_user(username)
     if not user:
@@ -25,5 +27,7 @@ def get_user(username: str, db: Session = Depends(_db.get_db)) -> User:
 
 @router.post("/", response_model=User, status_code=status.HTTP_201_CREATED)
 def create_user(user: User, db: Session = Depends(_db.get_db)) -> User:
+    """Endpoint to create a new user."""
+
     user_services: UserService = UserService(UserRepository(db))
     return user_services.create(user)
