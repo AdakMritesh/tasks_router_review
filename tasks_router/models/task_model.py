@@ -6,7 +6,7 @@ import uuid
 from datetime import UTC, datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, DateTime, UUID, ForeignKey
+from sqlalchemy import String, DateTime, UUID, ForeignKey, Enum
 # from sqlalchemy.sql import func
 
 from tasks_router.database.initiate_db import Base
@@ -34,7 +34,7 @@ class Task(Base):
     )
     
     status: Mapped[TaskStatus] = mapped_column(
-        String,
+        Enum(TaskStatus),
         default=TaskStatus.TODO,
         nullable=False
     )

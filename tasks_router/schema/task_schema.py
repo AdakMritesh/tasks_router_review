@@ -9,20 +9,20 @@ from datetime import datetime
 
 from tasks_router.enums.task_statuses import TaskStatus
 
-class Task(BaseModel):
-    user_id: uuid.UUID = Field(validation_alias=AliasChoices('userId', 'user_id'))
+class TaskCreate(BaseModel):
     title: str
     status: TaskStatus = TaskStatus.TODO
     due_date: datetime | None = Field(default=None, validation_alias=AliasChoices('dueDate', 'due_date'))
     model_config = ConfigDict(from_attributes=True)
 
-class TaskCreate(Task):
-    pass
+class TaskUpdate(BaseModel):
+    title: str | None = None
+    status: TaskStatus | None = None
+    due_date: datetime | None = None
 
-class TaskUpdate(Task):
+class TaskResponse(BaseModel):
     id: uuid.UUID
-    # user_id: str
-
-class TaskResponse(Task):
-    id: uuid.UUID
-    # user_id: str
+    title: str
+    status: TaskStatus
+    due_date: datetime | None
+    # add audit fields if and when needed
