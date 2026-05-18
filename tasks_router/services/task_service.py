@@ -11,7 +11,7 @@ from tasks_router.models.task_model import Task as TaskModel
 from tasks_router.schema.task_schema import TaskCreate, TaskUpdate, TaskResponse
 from tasks_router.repositories.task_repo import TaskRepository
 from tasks_router.utils import convert_task_model_to_response_dto, convert_task_models_to_responses_dto
-from tasks_router.exceptions.custom_exceptions import TaskNotFoundException, DatabaseOperationException
+from tasks_router.exceptions.custom_exceptions import TaskNotFoundException, DatabaseOperationException, ServiceException
 
 class TaskServices:
     def __init__(self, repository: TaskRepository) -> None:
@@ -27,8 +27,10 @@ class TaskServices:
             if not queried_tasks:
                 return []
             return convert_task_models_to_responses_dto(queried_tasks)
-        except SQLAlchemyError as e:
-            raise DatabaseOperationException(f"Error retrieving tasks for user ID {user_id}: {str(e)}") from e
+        except DatabaseOperationException:
+            raise
+        except Exception as e:
+            raise ServiceException(f"Error retrieving tasks for user ID {user_id}: {str(e)}") from e
 
 
     def create(self, task: TaskCreate, user_id: uuid.UUID) -> TaskResponse:
@@ -45,16 +47,21 @@ class TaskServices:
         try:
             created_task: TaskModel = self.repository.create(new_task)
             return convert_task_model_to_response_dto(created_task)
-        except SQLAlchemyError as e:
-            raise DatabaseOperationException(f"Error creating task for user ID {user_id}: {str(e)}") from e
+        except DatabaseOperationException:
+            raise
+        except Exception as e:
+            raise ServiceException(f"Error creating task for user ID {user_id}: {str(e)}") from e
+
 
     def update(self, task_id: uuid.UUID, task: TaskUpdate) -> TaskResponse:
         """Service for updating an existing task in the database."""
 
         try:
             existing_task: TaskModel = self.repository.get_by_id(task_id)
-        except TaskNotFoundException as e:
-            raise TaskNotFoundException(task_id) from e
+        except TaskNotFoundException:
+            raise
+        except DatabaseOperationException:
+            raise
 
         updated_task_data: dict[str, object] = task.model_dump(exclude_unset=True)
         for key, value in updated_task_data.items():
@@ -63,18 +70,25 @@ class TaskServices:
         try:
             updated_task: TaskModel = self.repository.update(existing_task)
             return convert_task_model_to_response_dto(updated_task)
-        except SQLAlchemyError as e:
-            raise DatabaseOperationException(f"Error updating task with ID {task_id}: {str(e)}") from e
+        except DatabaseOperationException:
+            raise
+        except Exception as e:
+            raise ServiceException(f"Error updating task with ID {task_id}: {str(e)}") from e
+
 
     def delete(self, task_id: uuid.UUID):
         """Service for deleting a task from the database."""
 
         try:
             existing_task: TaskModel = self.repository.get_by_id(task_id)
-        except TaskNotFoundException as e:
-            raise TaskNotFoundException(task_id) from e
+        except TaskNotFoundException:
+            raise
+        except DatabaseOperationException:
+            raise
 
         try:
             self.repository.delete(existing_task)
-        except SQLAlchemyError as e:
-            raise DatabaseOperationException(f"Error deleting task with ID {task_id}: {str(e)}") from e
+        except DatabaseOperationException as e:
+            raise
+        except Exception as e:
+            raise ServiceException(f"Error deleting task with ID {task_id}: {str(e)}") from e
