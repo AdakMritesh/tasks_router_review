@@ -11,11 +11,3 @@ class TaskNotFoundException(Exception):
         self.task_id = task_id
         self.message = f"Task with ID {task_id} not found."
         super().__init__(self.message)
-
-class TaskDeleteException(Exception):
-    """Exception raised when a task cannot be deleted."""
-
-    def __init__(self, task_id: uuid.UUID) -> None:
-        self.task_id = task_id
-        self.message = f"Task with ID {task_id} cannot be deleted."
-        super().__init__(self.message)
