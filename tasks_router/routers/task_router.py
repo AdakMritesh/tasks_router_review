@@ -1,3 +1,7 @@
+"""
+Task management API endpoints for CRUD operations on tasks.
+"""
+
 import uuid
 
 from fastapi import APIRouter, Depends, status

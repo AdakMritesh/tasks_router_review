@@ -1,3 +1,7 @@
+"""
+User management API endpoints for retrieving and creating users.
+"""
+
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 

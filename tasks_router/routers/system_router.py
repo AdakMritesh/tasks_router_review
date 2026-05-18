@@ -1,3 +1,7 @@
+"""
+System endpoints for health checks and root welcome message.
+"""
+
 from fastapi import APIRouter, status
 
 router: APIRouter = APIRouter(tags=["System"])
