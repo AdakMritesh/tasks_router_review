@@ -6,6 +6,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
 
+    local: bool = False
+
     host: str = "localhost"
     port: int = 5432
     username: str = "user"
@@ -19,10 +21,10 @@ class Settings(BaseSettings):
     # TODO: Add logging here to log the loaded settings, ensuring that sensitive information like passwords is not logged. 
     # Adding validation for the settings to ensure they are correct before attempting to connect to the database.
     
-    def get_db_url(self, local: bool = False) -> str:
+    def get_db_url(self) -> str:
         """Constructs the database URL from the settings."""
 
-        if local:
+        if self.local:
             return "sqlite:///./local.db"
         
         return f"postgresql+psycopg2://{self.username}:{self.password}@{self.host}:{self.port}/{self.database}"
@@ -30,6 +32,9 @@ class Settings(BaseSettings):
     def get_conn_args(self) -> dict[str, str]:
         """Constructs the connection arguments from the settings."""
 
+        if self.local:
+            return {}
+        
         return {
             "sslmode": self.sslmode,
             "sslrootcert": self.sslrootcert
