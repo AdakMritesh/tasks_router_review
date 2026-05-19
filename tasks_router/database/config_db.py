@@ -19,9 +19,12 @@ class Settings(BaseSettings):
     # TODO: Add logging here to log the loaded settings, ensuring that sensitive information like passwords is not logged. 
     # Adding validation for the settings to ensure they are correct before attempting to connect to the database.
     
-    def get_db_url(self) -> str:
+    def get_db_url(self, local: bool = False) -> str:
         """Constructs the database URL from the settings."""
 
+        if local:
+            return "sqlite:///./local.db"
+        
         return f"postgresql+psycopg2://{self.username}:{self.password}@{self.host}:{self.port}/{self.database}"
     
     def get_conn_args(self) -> dict[str, str]:
@@ -30,6 +33,6 @@ class Settings(BaseSettings):
         return {
             "sslmode": self.sslmode,
             "sslrootcert": self.sslrootcert
-        }
-    
+        }    
+
 settings: Settings = Settings()
