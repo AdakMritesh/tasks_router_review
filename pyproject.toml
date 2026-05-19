@@ -41,7 +41,7 @@ select = ["E", "F", "I"]
 line-length = 88
 
 [tool.pdm.scripts]
-dev = "uvicorn tasks_router.main:router --reload"
+dev = "uvicorn tasks_router.main:app --reload"
 lint = "ruff check ."
 format = "black ."
 test = "pytest -q"
