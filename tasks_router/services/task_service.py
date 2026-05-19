@@ -51,11 +51,11 @@ class TaskServices:
             raise ServiceException(f"Error creating task for user ID {user_id}: {str(e)}") from e
 
 
-    def update(self, task_id: uuid.UUID, task: TaskUpdate) -> TaskResponse:
+    def update(self, task_id: uuid.UUID, user_id: uuid.UUID, task: TaskUpdate) -> TaskResponse:
         """Service for updating an existing task in the database."""
 
         try:
-            existing_task: TaskModel = self.repository.get_by_id(task_id)
+            existing_task: TaskModel = self.repository.get_by_id(task_id, user_id)
         except TaskNotFoundException:
             raise
         except DatabaseOperationException:
@@ -74,11 +74,11 @@ class TaskServices:
             raise ServiceException(f"Error updating task with ID {task_id}: {str(e)}") from e
 
 
-    def delete(self, task_id: uuid.UUID):
+    def delete(self, task_id: uuid.UUID, user_id: uuid.UUID) -> None:
         """Service for deleting a task from the database."""
 
         try:
-            existing_task: TaskModel = self.repository.get_by_id(task_id)
+            existing_task: TaskModel = self.repository.get_by_id(task_id, user_id)
         except TaskNotFoundException:
             raise
         except DatabaseOperationException:
