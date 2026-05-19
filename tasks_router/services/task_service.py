@@ -86,7 +86,7 @@ class TaskServices:
 
         try:
             self.repository.delete(existing_task)
-        except DatabaseOperationException as e:
+        except DatabaseOperationException:
             raise
         except Exception as e:
             raise ServiceException(f"Error deleting task with ID {task_id}: {str(e)}") from e
