@@ -34,7 +34,9 @@ class TaskRepository:
         """Retrieve a task by its ID."""
         
         try:
-            task: TaskModel | None = self.db_session.query(TaskModel).filter(TaskModel.id == task_id, TaskModel.user_id == user_id).first()
+            task: TaskModel | None = self.db_session.query(TaskModel) \
+                                        .filter(TaskModel.id == task_id, TaskModel.user_id == user_id) \
+                                        .first()
             if not task:
                 raise TaskNotFoundException(task_id)
             return task
