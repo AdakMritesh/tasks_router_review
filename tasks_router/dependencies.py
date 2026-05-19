@@ -1,20 +1,26 @@
+from typing import Generator
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from tasks_router.database.initiate_db import Database
-from tasks_router.database.config_db import settings
 from tasks_router.repositories.task_repo import TaskRepository
 from tasks_router.repositories.user_repo import UserRepository
 from tasks_router.services.task_service import TaskServices
 from tasks_router.services.user_service import UserService
+from tasks_router.database.initiate_db import Database
+from tasks_router.database.config_db import settings
 
-_db = Database(settings)
+_db: Database = Database(settings)
 
-def get_task_repository(db: Session = Depends(_db.get_db)) -> TaskRepository:
+def get_db() -> Generator[Session, None, None]:
+    """Dependency function to provide a database session."""
+    yield from _db.get_db()
+
+def get_task_repository(db: Session = Depends(get_db)) -> TaskRepository:
     """Dependency function to provide a TaskRepository instance."""
     return TaskRepository(db)
 
-def get_user_repository(db: Session = Depends(_db.get_db)) -> UserRepository:
+def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:
     """Dependency function to provide a UserRepository instance."""
     return UserRepository(db)
 
