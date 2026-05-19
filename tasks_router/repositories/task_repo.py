@@ -61,10 +61,12 @@ class TaskRepository:
         """Update an existing task in the database."""
         
         try:
-            merged_task = self.db_session.merge(task)
+            # merged_task = self.db_session.merge(task)
             self.db_session.commit()
-            self.db_session.refresh(merged_task)
-            return merged_task
+            # self.db_session.refresh(merged_task)
+            # return merged_task
+            self.db_session.refresh(task)
+            return task
         except Exception as e:
             self.db_session.rollback()
             raise DatabaseOperationException(f"Error updating task with ID {task.id}: {str(e)}") from e
