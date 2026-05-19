@@ -5,19 +5,14 @@ Task management API endpoints for CRUD operations on tasks.
 import uuid
 
 from fastapi import APIRouter, Depends, status, HTTPException
-from sqlalchemy.orm import Session
 
 from tasks_router.services.task_service import TaskServices
-from tasks_router.repositories.task_repo import TaskRepository
 from tasks_router.schema.task_schema import TaskCreate, TaskUpdate, TaskResponse
-from tasks_router.database.initiate_db import Database
-from tasks_router.database.config_db import settings
-from tasks_router.dependencies.auth_placeholder import get_current_user_id
+from tasks_router.auth_placeholder import get_current_user_id
+from tasks_router.dependencies import get_task_services
 from tasks_router.exceptions.custom_exceptions import DatabaseOperationException, TaskNotFoundException, ServiceException
 
 router: APIRouter = APIRouter(prefix="/tasks", tags=["Tasks"])
-
-_db = Database(settings)
 
 # TODO: 
 # 1. Add authentication and authorization dependencies to ensure that users can only access their own tasks.
@@ -30,12 +25,11 @@ _db = Database(settings)
     )
 def get_tasks(
     user_id: uuid.UUID = Depends(get_current_user_id),
-    db: Session = Depends(_db.get_db),
+    task_services: TaskServices = Depends(get_task_services)
     ) -> list[TaskResponse]:
     """Endpoint to retrieve all tasks for a given user ID."""
 
     try:
-        task_services: TaskServices = TaskServices(TaskRepository(db))
         return task_services.get_all(user_id)
     except DatabaseOperationException as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
@@ -53,12 +47,11 @@ def get_tasks(
 def create_task(
     task: TaskCreate,
     user_id: uuid.UUID = Depends(get_current_user_id),
-    db: Session = Depends(_db.get_db)
+    task_services: TaskServices = Depends(get_task_services)
     ) -> TaskResponse:
     """Endpoint to create a new task."""
 
     try:
-        task_services: TaskServices = TaskServices(TaskRepository(db))
         created_task: TaskResponse = task_services.create(task, user_id)
         return created_task
     except DatabaseOperationException as e:
@@ -78,12 +71,11 @@ def update_task(
     task_id: uuid.UUID,
     task: TaskUpdate,
     user_id: uuid.UUID = Depends(get_current_user_id),
-    db: Session = Depends(_db.get_db)
+    task_services: TaskServices = Depends(get_task_services)
     ) -> TaskResponse:
     """Endpoint to update an existing task."""
 
     try:
-        task_services: TaskServices = TaskServices(TaskRepository(db))
         updated_task: TaskResponse = task_services.update(task_id, user_id, task)
         return updated_task
     except TaskNotFoundException:
@@ -102,12 +94,11 @@ def update_task(
 def delete_task(
     task_id: uuid.UUID,
     user_id: uuid.UUID = Depends(get_current_user_id),
-    db: Session = Depends(_db.get_db)
+    task_services: TaskServices = Depends(get_task_services)
     ) -> None:
     """Endpoint to delete a task by ID."""
     
     try:
-        task_services: TaskServices = TaskServices(TaskRepository(db))
         task_services.delete(task_id, user_id)
     except TaskNotFoundException:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Task with ID {task_id} not found")

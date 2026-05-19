@@ -1,0 +1,27 @@
+from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from tasks_router.database.initiate_db import Database
+from tasks_router.database.config_db import settings
+from tasks_router.repositories.task_repo import TaskRepository
+from tasks_router.repositories.user_repo import UserRepository
+from tasks_router.services.task_service import TaskServices
+from tasks_router.services.user_service import UserService
+
+_db = Database(settings)
+
+def get_task_repository(db: Session = Depends(_db.get_db)) -> TaskRepository:
+    """Dependency function to provide a TaskRepository instance."""
+    return TaskRepository(db)
+
+def get_user_repository(db: Session = Depends(_db.get_db)) -> UserRepository:
+    """Dependency function to provide a UserRepository instance."""
+    return UserRepository(db)
+
+def get_task_services(task_repo: TaskRepository = Depends(get_task_repository)) -> TaskServices:
+    """Dependency function to provide a TaskServices instance."""
+    return TaskServices(task_repo)
+
+def get_user_services(user_repo: UserRepository = Depends(get_user_repository)) -> UserService:
+    """Dependency function to provide a UserService instance."""
+    return UserService(user_repo)
