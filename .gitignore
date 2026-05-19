@@ -4,3 +4,4 @@ __pycache__/
 .env*
 env/
 global-bundle.pem
+local.db
