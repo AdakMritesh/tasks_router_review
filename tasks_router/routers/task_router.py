@@ -4,7 +4,7 @@ Task management API endpoints for CRUD operations on tasks.
 
 import uuid
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
 from tasks_router.services.task_service import TaskServices
@@ -16,6 +16,9 @@ from tasks_router.database.config_db import settings
 router: APIRouter = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 _db = Database(settings)
+
+# TODO: Add authentication and authorization dependencies to ensure that users can only access their own tasks.
+# TODO: Update routers per the new updates to the models and schemas. user_id should be passed separately from the request body using the placeholder auth module.
 
 @router.get("/", response_model=list[TaskResponse], status_code=status.HTTP_200_OK)
 def get_tasks(user_id: uuid.UUID, db: Session = Depends(_db.get_db)) -> list[TaskResponse]:
