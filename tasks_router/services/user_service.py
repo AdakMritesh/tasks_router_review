@@ -2,6 +2,7 @@
 UserService class that provides business logic for user management operations.
 This module defines the UserService class, which interacts with the UserRepository to perform CRUD operations on User entities. The UserService class also handles the conversion of UserModel instances to UserSchemas for API responses.
 """
+import uuid
 
 from tasks_router.exceptions.custom_exceptions import ServiceException, UserNotFoundException, DatabaseOperationException
 from tasks_router.schema.user_schema import User as UserDTO
@@ -32,6 +33,7 @@ class UserService:
         """Service for creating a new user in the database."""
 
         new_user_data = user.model_dump(exclude_unset=True)
+        new_user_data["id"] = uuid.uuid4()
         new_user = UserModel(**new_user_data)
 
         try:
