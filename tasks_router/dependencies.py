@@ -10,11 +10,11 @@ from tasks_router.services.user_service import UserService
 from tasks_router.database.initiate_db import Database
 from tasks_router.database.config_db import settings
 
-_db: Database = Database(settings)
+db: Database = Database(settings)
 
 def get_db() -> Generator[Session, None, None]:
     """Dependency function to provide a database session."""
-    yield from _db.get_db()
+    yield from db.get_db()
 
 def get_task_repository(db: Session = Depends(get_db)) -> TaskRepository:
     """Dependency function to provide a TaskRepository instance."""
