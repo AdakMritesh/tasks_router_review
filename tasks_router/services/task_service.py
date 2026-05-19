@@ -39,6 +39,7 @@ class TaskServices:
         # 2. Add validation for due date to ensure that it is not set to a past date.
 
         new_task_data: dict[str, object] = task.model_dump(exclude_unset=True)
+        new_task_data["id"] = uuid.uuid4()
         new_task_data['user_id'] = user_id
         new_task: TaskModel = TaskModel(**new_task_data)
 
