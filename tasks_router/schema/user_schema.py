@@ -2,14 +2,18 @@
 Schema definitions for user-related operations
 """
 
+import uuid
+
 from pydantic import BaseModel, Field, AliasChoices, ConfigDict
 
 class User(BaseModel):
+
+    id: uuid.UUID
+
     username: str = Field(
         validation_alias=AliasChoices(
             'username',
             'userId',
-            'id',
             'userName',
             'user_id',
             'user_name'
