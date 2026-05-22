@@ -3,6 +3,7 @@ Configuration module for database connection settings. This module defines a Set
 """
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import SecretStr
 
 class Settings(BaseSettings):
 
@@ -11,7 +12,7 @@ class Settings(BaseSettings):
     host: str = "localhost"
     port: int = 5432
     username: str = "user"
-    password: str = "password"
+    password: SecretStr = SecretStr("password")
     database: str = "tasks_db"
     sslmode: str = "verify-full"
     sslrootcert: str = "./global-bundle.pem"
