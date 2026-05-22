@@ -28,7 +28,7 @@ class Settings(BaseSettings):
         if self.local:
             return "sqlite:///./local.db"
         
-        return f"postgresql+psycopg2://{self.username}:{self.password}@{self.host}:{self.port}/{self.database}"
+        return f"postgresql+psycopg2://{self.username}:{self.password.get_secret_value()}@{self.host}:{self.port}/{self.database}"
     
     def get_conn_args(self) -> dict[str, str]:
         """Constructs the connection arguments from the settings."""
