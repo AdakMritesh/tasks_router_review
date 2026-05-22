@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_prefix="DB_")
 
-    # Prebuilt URL
+    # Prebuilt URL (only for local development and testing)
     url: Optional[str] = None
 
     # Stanalone connection parameters
