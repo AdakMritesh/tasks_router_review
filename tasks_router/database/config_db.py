@@ -2,6 +2,7 @@
 Configuration module for database connection settings. This module defines a Settings class that uses Pydantic to manage database connection parameters, including host, port, username, password, database name, and SSL configuration. The Settings class provides methods to construct the database URL and connection arguments based on the provided settings. An instance of the Settings class is created at the end of the module for use in other parts of the application.
 """
 
+from typing import Optional
 from urllib.parse import quote_plus
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -12,7 +13,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_prefix="DB_")
 
     # Prebuilt URL
-    url: str = None
+    url: Optional[str] = None
 
     # Stanalone connection parameters
     host: str = "localhost"
@@ -22,8 +23,8 @@ class Settings(BaseSettings):
     database: str = "psql"
 
     # SSL configuration
-    sslmode: str = None
-    sslrootcert: str = None
+    sslmode: Optional[str] = None
+    sslrootcert: Optional[str] = None
 
     # DB engine configuration
     echo: bool = False
