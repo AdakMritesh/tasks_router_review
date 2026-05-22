@@ -9,16 +9,32 @@ from pydantic import SecretStr
 
 class Settings(BaseSettings):
 
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="DB_")
+
+    # Prebuilt URL
     url: str = None
+
+    # Stanalone connection parameters
     host: str = "localhost"
     port: int = 5432
-    username: str = "user"
-    password: SecretStr = SecretStr("password")
+    username: str
+    password: SecretStr
     database: str = "psql"
+
+    # SSL configuration
     sslmode: str = None
     sslrootcert: str = None
 
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="DB_")
+    # DB engine configuration
+    echo: bool = False
+    pool_pre_ping: bool = True
+    pool_size: int = 10
+    max_overflow: int = 20
+
+    # DB session configuration
+    autocommit: bool = False
+    autoflush: bool = False
+
 
     # TODO: Add logging here to log the loaded settings, ensuring that sensitive information like passwords is not logged. 
     # Adding validation for the settings to ensure they are correct before attempting to connect to the database.
