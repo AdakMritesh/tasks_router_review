@@ -18,10 +18,10 @@ class Database:
     def __init__(self, settings: Settings) -> None:
         """Initializes the Database instance with the provided settings."""
 
-        self.db_url = settings.get_db_url()
-        self.conn_args = settings.get_conn_args()
+        self.settings = settings
         self._engine: Engine | None = None
         self._session_factory: sessionmaker[Session] | None = None
+        
 
     def get_engine(self) -> Engine:
         """Returns a cached Engine instance. Creates one if it doesn't exist."""
@@ -29,12 +29,12 @@ class Database:
         # TODO: Implement exception handling and logging for database connection issues. Consider retry logic for transient errors.
         if self._engine is None: # Move all these configuration params to a config file.
             self._engine = create_engine(
-                self.db_url,
-                echo=True,
-                pool_pre_ping=True,
-                connect_args=self.conn_args,
-                pool_size=10,
-                max_overflow=20
+                self.settings.get_db_url(),
+                echo=self.settings.echo,
+                pool_pre_ping=self.settings.pool_pre_ping,
+                pool_size=self.settings.pool_size,
+                max_overflow=self.settings.max_overflow,
+                connect_args=self.settings.get_conn_args()
             )
         return self._engine
 
@@ -45,8 +45,8 @@ class Database:
         if self._session_factory is None: # Move all these configuration params to a config file.
             self._session_factory = sessionmaker(
                 self.get_engine(),
-                autocommit=False,
-                autoflush=False
+                autocommit=self.settings.autocommit,
+                autoflush=self.settings.autoflush
             )
         return self._session_factory
 
