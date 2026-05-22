@@ -20,7 +20,7 @@ class UserService:
         """Service for retrieving a user by their username."""
 
         try:
-            user = self.repository.get_by_id(username)
+            user = self.repository.get_by_username(username)
             return convert_user_model_to_user_schema_dto(user)
         except UserNotFoundException:
             raise
