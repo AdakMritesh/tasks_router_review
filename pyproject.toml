@@ -18,8 +18,8 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "boto3>=1.43.6",
     "psycopg2-binary>=2.9.12",
-    "mangum>=0.21.0"
-    "structlog"
+    "mangum>=0.21.0",
+    "structlog",
     "asgi-correlation-id"
 ]
 license = {text = "MIT"}
