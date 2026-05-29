@@ -7,8 +7,8 @@ from tasks_router.repositories.task_repo import TaskRepository
 from tasks_router.repositories.user_repo import UserRepository
 from tasks_router.services.task_service import TaskServices
 from tasks_router.services.user_service import UserService
-from tasks_router.database.initiate_db import Database
-from tasks_router.database.config_db import settings
+from tasks_router.infrastructure.initiate_db import Database
+from tasks_router.infrastructure.configurations import settings
 
 db: Database = Database(settings)
 

@@ -7,7 +7,7 @@ from typing import Generator
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from .config_db import Settings
+from .configurations import Settings
 
 
 class Database:
