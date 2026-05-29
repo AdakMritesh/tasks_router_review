@@ -3,6 +3,7 @@ Repository module for managing User entities in the database.
 This module defines the UserRepository class, which provides methods for performing CRUD operations on User entities using SQLAlchemy ORM.
 """
 
+import structlog
 from sqlalchemy.orm import Session
 
 from tasks_router.exceptions.custom_exceptions import UserNotFoundException, DatabaseOperationException
@@ -15,6 +16,7 @@ class UserRepository:
         """Initialize the UserRepository with a database session."""
 
         self.db_session = db_session
+        self._logger = structlog.get_logger(__name__)
 
     # ------------------------------ CRUD operations ------------------------------
 
@@ -25,6 +27,7 @@ class UserRepository:
         """Retrieve all users."""
         
         try:
+            self._logger.debug("users_repo.get_all")
             return self.db_session.query(UserModel).all()
         except Exception as e:
             raise DatabaseOperationException(f"Error occurred while fetching users: {str(e)}") from e
@@ -33,6 +36,7 @@ class UserRepository:
         """Retrieve a user by their username."""
         
         try:
+            self._logger.debug("users_repo.get_by_username", username=username)
             user: UserModel | None = self.db_session.query(UserModel).filter(UserModel.username == username).first()
             if not user:
                 raise UserNotFoundException(username)
@@ -48,9 +52,11 @@ class UserRepository:
         """Create a new user in the database."""
 
         try:
+            self._logger.debug("users_repo.create", username=user.username)
             self.db_session.add(user)
             self.db_session.commit()
             self.db_session.refresh(user)
+            self._logger.info("users_repo.create.success", username=user.username)
             return user
         except Exception as e:
             self.db_session.rollback()
@@ -61,9 +67,11 @@ class UserRepository:
         """Update an existing user in the database."""
         
         try:
+            self._logger.debug("users_repo.update", username=user.username)
             merged_user = self.db_session.merge(user) # Add logger here
             self.db_session.commit()
             self.db_session.refresh(merged_user)
+            self._logger.info("users_repo.update.success", username=merged_user.username)
             return merged_user
         except Exception as e:
             self.db_session.rollback()
@@ -75,8 +83,10 @@ class UserRepository:
         """Delete a user from the database."""
 
         try:
+            self._logger.debug("users_repo.delete", username=user.username)
             self.db_session.delete(user)
             self.db_session.commit()
+            self._logger.info("users_repo.delete.success", username=user.username)
         except Exception as e:
             self.db_session.rollback()
             raise DatabaseOperationException(f"Error occurred while deleting the user: {str(e)}") from e

@@ -5,6 +5,7 @@ This module defines the TaskRepository class, which provides methods for perform
 
 import uuid
 
+import structlog
 from sqlalchemy.orm import Session
 
 from tasks_router.models.task_model import Task as TaskModel
@@ -17,6 +18,7 @@ class TaskRepository:
         """Initialize the TaskRepository with a database session."""
 
         self.db_session = db_session
+        self._logger = structlog.get_logger(__name__)
 
     # ------------------------------ CRUD operations ------------------------------
 
@@ -26,6 +28,7 @@ class TaskRepository:
         """Retrieve all tasks for a given user ID."""
         
         try:
+            self._logger.debug("tasks_repo.get_all", user_id=str(user_id))
             return self.db_session.query(TaskModel).filter(TaskModel.user_id == user_id).all()
         except Exception as e:
             raise DatabaseOperationException(f"Error retrieving tasks for user ID {user_id}: {str(e)}") from e
@@ -34,6 +37,7 @@ class TaskRepository:
         """Retrieve a task by its ID."""
         
         try:
+            self._logger.debug("tasks_repo.get_by_id", user_id=str(user_id), task_id=str(task_id))
             task: TaskModel | None = self.db_session.query(TaskModel) \
                                         .filter(TaskModel.id == task_id, TaskModel.user_id == user_id) \
                                         .first()
@@ -51,9 +55,11 @@ class TaskRepository:
         """Create a new task in the database."""
 
         try:
+            self._logger.debug("tasks_repo.create", task_id=str(task.id), user_id=str(task.user_id))
             self.db_session.add(task)
             self.db_session.commit()
             self.db_session.refresh(task)
+            self._logger.info("tasks_repo.create.success", task_id=str(task.id), user_id=str(task.user_id))
             return task
         except Exception as e:
             self.db_session.rollback()
@@ -63,11 +69,13 @@ class TaskRepository:
         """Update an existing task in the database."""
         
         try:
+            self._logger.debug("tasks_repo.update", task_id=str(task.id), user_id=str(task.user_id))
             # merged_task = self.db_session.merge(task)
             self.db_session.commit()
             # self.db_session.refresh(merged_task)
             # return merged_task
             self.db_session.refresh(task)
+            self._logger.info("tasks_repo.update.success", task_id=str(task.id), user_id=str(task.user_id))
             return task
         except Exception as e:
             self.db_session.rollback()
@@ -77,8 +85,10 @@ class TaskRepository:
         """Delete a task from the database."""
 
         try:
+            self._logger.debug("tasks_repo.delete", task_id=str(task.id), user_id=str(task.user_id))
             self.db_session.delete(task)
             self.db_session.commit()
+            self._logger.info("tasks_repo.delete.success", task_id=str(task.id), user_id=str(task.user_id))
         except Exception as e:
             self.db_session.rollback()
             raise DatabaseOperationException(f"Error deleting task with ID {task.id}: {str(e)}") from e
