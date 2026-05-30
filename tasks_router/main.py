@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-# from mangum import Mangum
+from mangum import Mangum
 import structlog
 from fastapi import FastAPI
 from asgi_correlation_id import CorrelationIdMiddleware
@@ -51,7 +51,7 @@ app.add_middleware(
     update_request_header=True,
 )
 
-# handler = Mangum(app)
+handler = Mangum(app)
 
 app.include_router(task_router)
 app.include_router(user_router)
