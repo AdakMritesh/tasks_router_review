@@ -63,7 +63,7 @@ def run_migrations_online() -> None:
 
     """
 
-    if settings.ENVIRONMENT == "development":
+    if settings.environment == "development":
         context.configure(
             url="sqlite://",  # dummy URL
             target_metadata=target_metadata,
