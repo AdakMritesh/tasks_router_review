@@ -63,14 +63,6 @@ def run_migrations_online() -> None:
 
     """
 
-    if settings.environment == "development":
-        context.configure(
-            url="sqlite://",  # dummy URL
-            target_metadata=target_metadata,
-            compare_type=True,
-        )
-        return
-
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

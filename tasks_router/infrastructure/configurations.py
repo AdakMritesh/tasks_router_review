@@ -9,6 +9,10 @@ import structlog
 from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+import boto3
+
+auth_token = boto3.client('rds', region_name='eu-central-1').generate_db_auth_token(DBHostname='database-1-instance-1.crck6826scxq.eu-central-1.rds.amazonaws.com', Port=5432, DBUsername='postgres', Region='eu-central-1')
+
 class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
@@ -18,7 +22,7 @@ class Settings(BaseSettings):
     )
 
     # General configuration
-    environment: str = "development"
+    environment: str = "production"
 
     # Prebuilt URL
     url: Optional[str] = Field(
@@ -29,8 +33,8 @@ class Settings(BaseSettings):
     # Stanalone connection parameters
     db_host: str = "localhost"
     db_port: int = 5432
-    db_username: str
-    db_password: SecretStr
+    db_username: str = "postgres"
+    db_password: SecretStr = auth_token
     db_database: str = "psql"
 
     # SSL configuration
