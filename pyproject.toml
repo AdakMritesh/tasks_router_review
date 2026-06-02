@@ -20,12 +20,19 @@ dependencies = [
     "mangum==0.21.0",
     "structlog==25.5.0",
     "asgi-correlation-id==4.3.4",
+]
+
+[dependency-groups]
+dev = [
     "pytest==9.0.3",
     "black==26.3.1",
     "isort==8.0.1",
-    "ruff==0.15.12",
+    "ruff==0.15.12"
+]
+db = [
     "alembic==1.18.4"
 ]
+
 license = {text = "MIT"}
 
 [tool.black]
@@ -43,12 +50,6 @@ dev = "uvicorn tasks_router.main:app --reload"
 lint = "ruff check ."
 format = "black ."
 test = "pytest -q"
-
-[tool.setuptools.dynamic]
-version = {attr = "tasks_router.__version__"}
-
-[tool.setuptools.packages.find]
-include = ["tasks_router*"]
 
 [tool.pdm]
 distribution = false
