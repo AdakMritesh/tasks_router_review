@@ -1,0 +1,23 @@
+# Ignore VCS
+.git*
+.gitignore
+
+# Project metadata
+README.md
+pyproject.toml
+pdm.lock
+.pdm*
+
+# Python caches
+__pycache__
+.pytest_cache
+
+# Environments
+.env*
+.venv
+
+# Editor settings
+.vscode
+
+# Project folders not needed in image
+tests
