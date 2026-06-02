@@ -42,7 +42,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    # url = config.get_main_option("sqlalchemy.url")
+
     url = settings.get_db_url()
     context.configure(
         url=url,
@@ -55,7 +55,7 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def run_migrations_online(dev: bool = True) -> None:
+def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
@@ -63,13 +63,13 @@ def run_migrations_online(dev: bool = True) -> None:
 
     """
 
-    if dev:
+    if settings.ENVIRONMENT == "development":
         context.configure(
             url="sqlite://",  # dummy URL
             target_metadata=target_metadata,
             compare_type=True,
         )
-    return
+        return
 
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
