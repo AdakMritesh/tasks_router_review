@@ -13,7 +13,6 @@ __pycache__
 .pytest_cache
 
 # Environments
-.env*
 .venv
 
 # Editor settings
