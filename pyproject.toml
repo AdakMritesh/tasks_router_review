@@ -22,18 +22,19 @@ dependencies = [
     "structlog==25.5.0",
     "asgi-correlation-id==4.3.4",
 ]
-license = {text = "MIT"}
 
 [dependency-groups]
 dev = [
     "pytest==9.0.3",
     "black==26.3.1",
     "isort==8.0.1",
-    "ruff==0.15.12",
+    "ruff==0.15.12"
 ]
-migrations = [
+db = [
     "alembic==1.18.4"
 ]
+
+license = {text = "MIT"}
 
 [tool.black]
 line-length = 88
