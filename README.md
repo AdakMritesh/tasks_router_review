@@ -69,6 +69,10 @@ This repository provides a clean, well-structured, and opinionated foundation fo
    docker compose up
    ```
 
+3. **Run Application**  
+   The application will be available at /localhost:8000  
+   Navigate to /docs to get to the Swagger UI for running the APIs.
+
 ## Project Structure Overview
 
 ```text
