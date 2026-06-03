@@ -25,10 +25,11 @@
 1. Added docker compose to orchestrate db and backend services for dev testing.
 
 **Pending**
-1. Tests have not been completely vetted.
+1. Tests have not yet been completely vetted.
 2. User Input validations needs to be tightended.
-3. Logging coverage is not comprehensive.
+3. Logging coverage is not yet comprehensive.
 4. Auth not yet implemented.
+5. Docstrings are not yet in place.
 
 # Tasks Router
 
