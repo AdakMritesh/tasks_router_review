@@ -1,7 +1,7 @@
 """
 Configuration module for database connection settings. This module defines a Settings class that uses Pydantic to manage database connection parameters, including host, port, username, password, database name, and SSL configuration. The Settings class provides methods to construct the database URL and connection arguments based on the provided settings. An instance of the Settings class is created at the end of the module for use in other parts of the application.
 """
-
+import os
 from typing import Optional
 from urllib.parse import quote_plus
 
@@ -11,10 +11,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 import boto3
 
+ENV_FILE = ".env" if os.path.exists(".env") else None
+
 class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=ENV_FILE,
         case_sensitive=False,
         extra="ignore",
     )
