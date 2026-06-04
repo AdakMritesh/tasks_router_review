@@ -51,6 +51,8 @@ This repository provides a clean, well-structured, and opinionated foundation fo
 
 ### Prerequisites
 - Docker Engine
+- Python3-pip
+- Git clone of the repository
 
 ### Quickstart (Local Deployment)
 1. **Configure Environment Variables**  
@@ -64,14 +66,31 @@ This repository provides a clean, well-structured, and opinionated foundation fo
    DB_DATABASE=postgres
    ```
 
-2. **Docker Compose**  
-   Run docker:
+2. **Install dependencies locally**
    ```bash
-   docker compose up
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
    ```
 
-3. **Run Application**  
-   The application will be available at /localhost:8000  
+3. **Start the DB container/service**  
+   Run docker:
+   ```bash
+   docker compose up db
+   ```
+
+4. **Run Alembic Upgrade**
+   ```bash
+   alembic upgrade head
+   ```
+
+5. **Start the backend container/service**
+   ```bash
+   docker compose up backend
+   ```
+
+6. **Run the application**  
+   The application will be available at /localhost:8000. Access it from a browser. 
    Navigate to /docs to get to the Swagger UI for running the APIs.
 
 ## Project Structure Overview
