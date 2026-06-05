@@ -51,45 +51,14 @@ This repository provides a clean, well-structured, and opinionated foundation fo
 
 ### Prerequisites
 - Docker Engine
-- Python3-pip
-- Git clone of the repository
 
 ### Quickstart (Local Deployment)
-1. **Configure Environment Variables**  
-   Create a `.env` file referencing the Database Settings configured in `infrastructure/configurations.py`. Use .env.example for reference. Skip the SSL mode and SSL Root Cert for local deployment:
-   ```dotenv
-   # Example .env configuration
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USERNAME=postgres
-   DB_PASSWORD=test123
-   DB_DATABASE=postgres
-   ```
-
-2. **Install dependencies locally**
+1. **Run Docker**
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
+   docker compose up
    ```
 
-3. **Start the DB container/service**  
-   Run docker:
-   ```bash
-   docker compose up db
-   ```
-
-4. **Run Alembic Upgrade**
-   ```bash
-   alembic upgrade head
-   ```
-
-5. **Start the backend container/service**
-   ```bash
-   docker compose up backend
-   ```
-
-6. **Run the application**  
+2. **Run the application**  
    The application will be available at /localhost:8000. Access it from a browser. 
    Navigate to /docs to get to the Swagger UI for running the APIs.
 
