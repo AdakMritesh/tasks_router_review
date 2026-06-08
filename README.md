@@ -7,5 +7,5 @@ Please do not exploit and use sparingly.
 App has some issues with running and is pending troubleshooting.
 **Update:**
 - Function URL no longer active.
-- The code seemingly fails at creating sqlalchemy db session. The raw db session (psycopg2) however, seems fine.
+- The code seemingly fails while creating a sqlalchemy db session. The raw db session (psycopg2) however, seems fine.
 - Making some amends to the db connection flow.
