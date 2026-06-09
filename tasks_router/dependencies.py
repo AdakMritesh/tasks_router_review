@@ -11,15 +11,21 @@ from tasks_router.services.user_service import UserService
 from tasks_router.infrastructure.initiate_db import Database
 from tasks_router.infrastructure.configurations import settings
 
-db: Database = Database(settings)
+database: Database = Database(settings)
 logger = structlog.get_logger(__name__)
 
 def get_db() -> Generator[Session, None, None]:
     """Dependency function to provide a database session."""
     logger.debug("db.session.open")
+    session: Session = database.get_db()
     try:
-        yield from db.get_db()
+        yield session
+    except Exception:
+        session.rollback()
+        logger.exception("db.session.error")
+        raise
     finally:
+        session.close()
         logger.debug("db.session.close")
 
 def get_task_repository(db: Session = Depends(get_db)) -> TaskRepository:
