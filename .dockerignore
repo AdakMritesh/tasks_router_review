@@ -7,8 +7,7 @@ __pycache__
 .pytest_cache
 .venv
 .vscode
-tests
-test.py
+tests/
 .env*
 .python-version
 alembic.ini
@@ -17,3 +16,4 @@ alembic*
 **/__pycache__
 Dockerfile
 docker-compose*.yml
+test*
