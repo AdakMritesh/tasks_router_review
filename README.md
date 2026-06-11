@@ -52,8 +52,7 @@ tasks_router/
 At the project root, you will additionally find the Alembic migration environments (`alembic/` and `alembic.ini`), PDM settings (`pyproject.toml`), a generic container definition (`dockerfile`), and the `tests/` directory.
 
 **Pending**
-1. Tests have not yet been completely vetted.
-2. User Input validations needs to be tightended.
-3. Logging coverage is not yet comprehensive.
-4. Auth not yet implemented.
-5. Docstrings are not yet in place.
+1. User Input validations needs to be tightended.
+2. Logging coverage is not yet comprehensive.
+3. Auth not yet implemented.
+4. Docstrings are not yet in place.
