@@ -1,6 +1,8 @@
 # Tasks Router
 
-A FastAPI service implementing a layered architecture pattern for managing tasks and users with PostgreSQL. 
+A FastAPI service implementing a layered architecture pattern for managing tasks and users with PostgreSQL.
+
+NOTE: branch "aws" has the serverless version of this code deployed as a Lambda Function connected to an Aurora DB.
 
 This repository provides a clean, well-structured, and opinionated foundation for building scalable REST APIs equipped with synchronous database access (SQLAlchemy + psycopg2), database migrations (Alembic), structured logging, and dependency management via PDM.
 
